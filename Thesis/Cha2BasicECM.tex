@@ -1,0 +1,187 @@
+\chapter{Basic ECM}
+\label{cha:basic ECM}
+In the mid 1980's H. W. Lenstra proposed a new factorization algorithm now known as the \textit{elliptic curve factorization method} abbreviated \textit{ECM}. Even though this algorithm have a worst case complexity equal to some of its competitors its special since the complexity depends on the least prime in the prime factorization of the number trying to factor. Therefore ECM currently provide the fastest means of finding factors of up to approximately 20-40 decimal digits (see e.g. \cite{Brent86someinteger}). In practice ECM is often used as subroutines in e.g. the Number Field Sieve.
+
+\section{Pseudo elliptic curves}
+\label{sec:pseudoEC}
+To formulate ECM it is not enough to know about elliptic curves over fields. We must, to some extend, generalize the concept of an elliptic curve. In the following we describe this generalization and introduce a partial addition on these (pseudo) elliptic curves. 
+
+The following example shows that the usual composition on elliptic curves does not give a group structure over a general field.
+\begin{ex}\label{exa:ringECsubtle}
+Assume that we define an elliptic curve over $\Z/n\Z$ with $n$ composite as in definition \ref{def:ellipticCurve} and using the same composition from theorem \ref{thm:ellipticGroupComposition}. Consider the curve $E=E_{W,-1,1}(\Z/2^5\Z)$. We try to compute $(1,1)+(24,4)$ on $E$. First observe that $(1,1)=(1,-24)=-(1,24)$ hence $(1,1)+(1,24)=\infty$. The $x$-coordinate for $(1,1)+(41,4)$ is 
+\[
+	\left(\frac{3}{20}\right)^2-1-21
+\]
+but $\gcd(20,2^5)>1$. We must have $(1,1)+(24,4)=\infty$. But in a group the element $(1,1)$ cannot have two inverse elements. 
+\end{ex}
+It should be emphasised that a rigorous construction exists but we will not need this. Therefore we will do with the pseudo construction below.
+\begin{defn}\label{def:pseudoC}
+Let $a,b\in \Z/n\Z$ with $\gcd(n,6)=1$ and $4a^3+27b^2\in \left(\Z/n\Z\right)^*$. An elliptic curve over the ring $\Z/n\Z$ is the set 
+\begin{align*}
+	E_{W,a,b}(\Z/n\Z)=\left\{ (x,y)\in \Z/n\Z \times \Z/n\Z\,\vert\, y^2=x^3+ax+b\right\}\cup\{\infi\}
+\end{align*}
+where $\infi$ is the point at infinity. 
+\end{defn}
+While elliptic curves over $\Z/n\Z$ do not form groups they have a natural projection to curves $E_{W,a,b}(\F_p)$ with $p\vert n$ and $p>3$. 
+
+Let $x\in\Z/n\Z$. With the notation $[x]_p$ we mean the unique integer satisfying $x\equiv [x]_p\mod p$ and $0\leq [x]_p < p$. Also for $(x,y)\in E_{W,a,b}(\Z/n\Z)$ we define $(x,y)_p=([x]_p,[y]_p)$. 
+\begin{defn}\label{def:redModp}
+Let $n\in\N$ and let $(x,y)$ be an element on the pseudo elliptic curve $E_{W,a,b}(\Z/n\Z)$ different from the point at infinity. Also let $p$ be a prime dividing $n$ and $p>3$. Then the reduction module $p$ is $(x,y)_p$ as an element of $E_{W,[a]_p,[b]_p}(\F_p)$. Also define $\infi_p=\infi$ as the identity element in $E_{W,[a]_p,[b]_p}(\F_p)$
+\end{defn}
+If $p$ does not divide $n$ we have no control over whether $E_{W,[a]_p,[b]_p}(\F_p)$ really is an elliptic curve or not. This follows since by definition $\gcd(4a^3+27b^2,n)=1$ but then also $\gcd(4a^3+27b^2,n)=1$ but if $p\nmid n$ we have no control over the behaviour of $\gcd$. If $E_{W,[a]_p,[b]_p}(\F_p)$ is a well defined elliptic curve with $p$ not dividing $n$, it is called a \textit{good reduction}. 
+
+Next we define partial addition on $E_{W,a,b}(\Z/n\Z)$. 
+\begin{defn}\label{defn:partialAdd}
+\textbf{Partial addition} Given $P_1,P_2\in E_{W,a,b}(\Z/n\Z)$. Then we define $P_1+P_2$ to be the usual addition on elliptic curves if all the required inverse elements exists in the ring $\Z/n\Z$ and likewise for $[k]P_1$ with $k\in\N$. In this situation we say that the addition is \textit{well defined}. If the addition require an inverse element which is not present it is not possible to make the addition and we say that the addition \textit{fail}.
+\end{defn}
+The definition of $[k]P$ being well defined has some subtleties. For $k=8$ we may calculate $[8]P$ in different ways e.g. $((([2]P+[2]P)+[2]P)+[2]P)$ or $([2]P+[2]P)+([2]P+[2]P)$. It may be that one gives a well defined addition but the other does not. If we in some way can calculate $[k]P$ we say that it is well defined. Finding an inverse to $x$ in the ring $\Z/n\Z$ is possible if and only if $x$ and $n$ are co-prime. That is, failure in the partial addition occur if and only if $\gcd(x,n)>1$, a possible non trivial factor! It is Lenstra's ingenious observation that through this failure of finding an inverse, we shall be able to factor the composite number $n$. The next lemma shows that the projection from definition \ref{def:redModp} is well behaved.
+\begin{lem}\label{lem:pseudoAddition}
+Let $R,Q\in E_{W,a,b}(\Z/n\Z)$ and let $p$ be a prime with $p\vert n$ and $p>3$. If the partial addition $R+Q$ is well defined, then $\left(R+Q\right)_p=R_p+Q_p$ and if $[k]R$ is well defined then $([k]R)_p=[k]R_p$ for $k\in \Z$, $k>0$.
+\end{lem}
+\begin{proof}
+We split the proof into the same cases as given in the composition on an elliptic curve, see section \ref{sec:ECGroup}
+\begin{enumerate}[(1)]
+\setcounter{enumi}{2}
+\item Assume $R=\infi$ and $Q\neq \infi$. Then $(R+Q)_p=(\infi+Q)_p=Q_p=\infi_p+Q_p=R_p+Q_p$. Same apply if $Q=\infty$ and argument $R\neq \infty$. Assume for the $R,Q\neq \infty$.
+\item Assume $R=-Q$ hence $R=(x,y)$ and $Q=(x,-y)$. Then $(R+Q)_p=(\infi)_p=\infi$ and $R_p+Q_p=(x,y)_p+(x,-y)_p=([x]_p,[y]_p)+([x]_p,-[y]_p)=\infi$ hence $(R+Q)_p=R_p+Q_p$. 
+\item Assume $R\neq -Q$. Write $R=(r_1,r_2)$ and $Q=(q_1,q_2)$. If $r_1\neq q_1$ we have: By assumption $\gcd(q_1-r_1,n)=1$ and $m=(q_2-r_2)(q_1-r_1)^{-1}$ is well defined in $\Z/n\Z$. Therefore
+\begin{align*}
+	R+Q=\left( m^2-r_1-q_1, m^2\left(r_1-\left(m^2-r_1-q_1\right)\right)-r_2\right)
+\end{align*}
+Then 
+\begin{align*}
+	(R+Q)_p &= \left( m^2-r_1-q_1, m^2\left(r_1-\left(m^2-r_1-q_1\right)\right)-r_2\right)_p \\
+			&= \left( [m]_p^2-[r_1]_p-[q_1]_p, [m]_p^2\left([r_1]_p-\left([m]_p^2-[r_1]_p-[q_1]_p\right)\right)-[r_2]_p\right)
+\end{align*}
+But $R_p=([r_1]_p,[r_2]_p)$ and $Q_p=([q_1]_p,[q_2]_p)$ hence 
+\begin{align*}
+ R_p+Q_p=\left( [m]_p^2-[r_1]_p-[q_1]_p, [m]_p^2\left([r_1]_p-\left([m]_p^2-[r_1]_p-[q_1]_p\right)\right)-[r_2]\right)
+\end{align*}
+from the normal addition and $[m]_p=[(q_2-r_2)(q_1-r_1)^{-1}]_p=([q_2]_p-[r_2]_p)([q_1]_p-[r_1]_p)^{-1}$.
+
+If $r_1=q_1$ the arguments are similar. The well defined assumption in the lemma is in this case used such that we know $\gcd(2r_2,n)=1$. 
+\end{enumerate}
+If both $R$ and $Q$ equal $\infi$ it is trivial since by definition $\infi_p=\infi$. $([k]R)_p=[k]R_p$ now follows by induction. 
+\end{proof}
+With the knowledge that $R+Q$ is well defined, we can with the above lemma in hand make statements about $R_p+Q_p$ without even knowing the exact value of $p$. The Only thing we need to know beforehand is that $p\vert n$. 
+\section{ECM}
+\label{sec:ECM}
+We will now state the elliptic curve method. It is actually really simple but pretty hard to analyse. The analysis will be done in the next section. The algorithm is displayed as algorithm \ref{alg:basicECM}
+\begin{algorithm}
+\caption{ECM (Lentra's original algorithm)}
+\label{alg:basicECM}
+\begin{algorithmic} 
+\REQUIRE $n\in \Z/n\Z$, $n>0$ with $\gcd(6,n)=1$ and not a perfect power. 
+\ENSURE Factor in $n$.
+\STATE (1)Pick bound $B_1$
+\STATE (2) Find pseudo elliptic curve $E=E_{W,a,b}(\Z/n\Z)$ and a point $(x,y)\in E$:
+\STATE $x,y,a\underset{R}{\in} [0,n-1]$
+\STATE $b:=(y^2-x^3-ax)\mod n$
+\STATE $g:=\gcd(4a^3+27b^2,n)$
+\IF{$g==n$} 
+\STATE Go to (1)
+\ENDIF
+\IF{$g>1$} 
+\RETURN g
+\ENDIF
+\STATE Pick $E=E_{W,a,b}(\Z/n\Z)$ and $P=(x,y)$
+\STATE (3) Prime power multipliers:
+\STATE Compute list of primes $\{p_1,p_2,\ldots,p_{\pi(B_1)}\}$
+\FOR{$i=1 \to \pi(B_1)$}
+\STATE Find largest integer $a_i$ such that $p_i^{a_i}\leq B_1$ 
+\FOR{$j=1 \to a_i$}
+\STATE $P=[p_i]P$ using the partial addition. If the addition fails then if $\gcd(d,n)\neq n$ one \textbf{Return} $\gcd(d,n)$ where $d$ is the addition-slope denominator which do not have an inverse in $\Z/n\Z$.
+\ENDFOR
+\ENDFOR
+\STATE (4) Failure
+\STATE Go to (2) or increment $B_1$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{rem}\label{rem:ECMterminate}
+To make the algorithm terminate there must be some upper bound on the number of times we wish to allow a new curve to be picked but clearly if it terminate it will produce a non-trivial divisor in $n$. 
+\end{rem}
+
+We now add some additional notes to each block in the ECM algorithm. 
+\begin{enumerate}[(1)]
+\item This bound is really an experimental thing which must be tunable. Optimally it depends on the least prime factor in $n$ which a priori is unknown. Therefore one must choose a bound and adjust it with respect to the practical behaviour of the algorithm. 
+\item Here we pick the pseudo elliptic curve which we will be working over. The notation $\underset{R}{\in}$ means that we pick the elements out randomly (with a uniform distribution). There is a slight change (depending on $n$) that we pick $x,y$ and $a$ such that we do not define an pseudo elliptic curve. This is checked with $\gcd(4a^3+27b^2,n)$. 
+\item What we do here is to compute $[k]P$ for a $k$ that is chosen to consist of a lot of small primes and powers of these. Explicitly we pick $k=\prod_{i=1}^{\pi(B_1)} p_i^{a_i}$ were $p_i$ and $a_i$ are as described in the algorithm. 
+\item If the addition does not fail we pick a new curve. There is an extension at this point which increase the chances of success. This is called \textit{The second stage} and will be described in section \ref{sec:2StageECM}.
+\end{enumerate}
+A lot of work has been put into optimizing the original algorithm proposed by Lenstra. Optimisations such as: The choice of curve, the choice of elliptic curve model and coordinate system, the choice of $k$ and how to compute it (addition chains) and a second stage. In chapter \ref{cha:edwardsCurves} and \ref{cha:ECMedwardsCurves} we will be optimizing the basic ECM using Edwards curves including some of the ideas just mentioned. 
+ 
+\section{Complexity}
+\label{sec:ECMcomplextiy}
+ECM is a probabilistic algorithm and only a heuristic complexity estimate exists but which in turn may be made rigorous except for one unproven conjecture concerning the smoothness distribution in the Hasse interval. In this section we give an estimate of the running time of ECM but with some simplifications to make the analysis easier.
+
+We must first settle the obvious question; why do ECM work? We give a sufficient condition.
+\begin{lem}\label{lem:sufConECM}
+	Let $n$ be composite with $\gcd(6,n)=1$ and not a perfect power. Pick $a,x,y\in\Z/n\Z$ random and put $b=y^2-x^3-ax\mod n$, $Q=(x,y)$. Suppose $\gcd(4a^3+27b^2,n)=1$ then $E_{W,a,b}(\Z/n\Z)$ is well defined. Also suppose that  $p$ is a prime dividing $n$. If $E_{W,[a]_p,[b]_p}(\F_p)$ is $B_1$-power smooth ($B_1$ is the bound in algorithm \ref{alg:basicECM}) we have
+\begin{align}\label{event:sufConECM}
+	[k]Q_p=\infi\; on\; E_{W,[a]_p,[b]_p}(\F_p)
+\end{align}
+where $k=\prod_{i<\pi(B_1)} p_i^{a_i}$ with $a_i$ maximal such that $p_i^{a_i}\leq B_1$. 
+\end{lem}
+\begin{proof}
+Put $E=E_{W,[a]_p,[b]_p}(\F_p)$. Since $\vert E\vert$ is $B_1$-power smooth we have $\vert E_p\vert\, \vert k$ and hence $\exists \delta$ such that $\vert E\vert\cdot \delta = k$. This give
+\[
+	[k]Q_p=[\vert E\vert\delta]Q_p=[\delta]([\vert E\vert]Q_p)=[\delta]\infi=\infi.
+\]
+\end{proof}
+Observe $[k]Q=\infi$ over $E$ in particular happens $\vert E\vert$ divides $k$ i.e. that $\vert E\vert$ is $B_1$-power smooth.
+\begin{pre}\label{prop:conFactor}
+Let the situation be as in lemma \ref{lem:sufConECM}.  Assume $[k]Q_q\neq\infi$ on $E_{W,[a]_q,[b]_q}(\F_q)$ for a prime dividing $n$. Then we have a factor in $n$. 
+\end{pre}
+\begin{proof}
+Assume for the sake of a contradiction that $[k]Q$ is well defined over $E_{W,a,b}(\Z/n\Z)$. If $[k]Q=\infi$ then by lemma \ref{lem:pseudoAddition} $[k]Q_q=([k]Q)_q=\infi_q=\infi$ contradicting our assumption. If $[k]Q\neq \infi$ then $[k]Q=(x,y)$ for some $x,y\in\Z/n\Z$. These satisfy $y^2=x^3+ax+b$. Reducing
+module p we obtain two points which satisfy the same equation, hence $[k]Q_p=(x,y)_p\neq\infi$. A contradiction by lemma \ref{lem:sufConECM}.
+\end{proof}
+The above essentially says that when considering all primes dividing $n$, if there is at least one pair $(p,q)$ of divisors of $n$ such that the curve order when reducing $p$ is $B_1$-power smooth and the curve order reducing $q$ is not $B_1$-power smooth we will discover a factor in $n$. Since the curve order of all good reductions is restricted by theorem \ref{thm:hasse} the possibility that all prime factors of $n$ will have $B_1$-power smooth reduction is small if $B_1$ is chosen appropriate. If more than one prime divisor of $n$ has $B_1$-power smooth reduction we will probably not find a prime divisor but some composite divisor of $n$. 
+
+The complexity is ruled by the number of curves we must use and how long time each curve takes to process. We begin with an estimate of the number of curves we may possibly use. 
+
+What corollary \ref{prop:conFactor} and the discussion above shows is that the lowest (\ref{prop:conFactor} gives a sufficient condition) change of success with ECM depends on the smoothness distribution of the elliptic curves $E_{W,[a]_p,[b]_p}(\F_p)$ for primes $p$ dividing $n$. Let $p$ be the smallest prime divisor of $n$. We make the assumption that the likelihood of the events in proposition \ref{prop:conFactor} is dominated by the event that $E_{W,[a]_p,[b]_p}(\F_p)$ is $B_1$-power smooth. We also make the assumption that being $B_1$-power smooth is the same as being $B_1$-smooth, because only primes below $\sqrt{B_1}$ occur with a power different from 1. 
+
+Let $\probi(B_1)$ denote the probability of success in algorithm \ref{alg:basicECM} using the bound $B_1$ hence we need approximate $\frac{1}{\probi(B_1)}$ curves to find a factor in $n$. By the above simplifications $\probi(B_1)$ equals the probability that $E_{W,[a]_p,[b]_p}(\F_p)$ is $B_1$-smooth. We now assume that the order of $E_{W,[a]_p,[b]_p}(\F_p)$ is uniformly distributed in the Hasse interval (By a theorem of Deuring \cite{pomeranceEt.al} p. 334 all integers in the Hasse interval actually corresponds to at least one elliptic curve). 
+
+Now lets look at the cost for one curve in ECM. The primary work is done in the two for-loops we therefore neglect the other costs. For each $p_i$ we need to make $p_i^{a_i}$ elliptic curve operations costing about $\ln(p_i^{a_i})$ since we exponentiate. Notice this is $\leq \ln(B_1)$ since $p_i^{a_i}\leq B_1$. The number of primes up to $B_1$ is approximately $\pi(B_1)\approx\frac{B_1}{\ln(B_1)}$. Therefore the cost for the two loops is around $\sum_{i=1}^{\pi(B_1)} \ln(p_i)\leq \sum_{i=1}^{\pi(B_1)} \ln(B_1)=\pi(B_1)\ln(B_1)\approx\frac{B_1}{\ln(B_1)}\ln(B_1)=B_1$. Hence the overall work is approximate $\frac{B_1}{\probi(B_1)}$. 
+
+To minimize the estimated running time, the number $B_1$ should be chosen such that $\frac{B_1}{\probi(B_1)}$ is minimal. To proceed we need a conjecture. Define $L(x)=e^{\sqrt{\ln x\ln\ln x}}$ then the hope is
+\begin{con}\label{con:distribution}
+Let $\alpha$ be a real number. Then the probability that a random positive integer $s\in [x+1-2\sqrt{x},x+1+2\sqrt{x}]$ has all its prime factors $\leq L(x)^\alpha$ is $L(x)^{-\frac{1}{2\alpha}+o(1)}$ for $x\rightarrow \infty$
+\end{con}
+For $x=p$ and the discussion above, conjecture \ref{con:distribution} implies $\probi(L(p)^\alpha)=L(p)^{-\frac{1}{2\alpha}+o(1)}$ for $p\rightarrow \infty$. Put $B_1=L(p)^\alpha$. Then $\frac{B_1}{\probi(B_1)}=\frac{L(p)^\alpha}{L(p)^{-\frac{1}{2\alpha}+o(1)}}=L(p)^{\frac{1}{2\alpha}+\alpha+o(1)}$ for $p\rightarrow\infty$. We must minimize $a+\frac{1}{2\alpha}$ which is easy to see occur at $\alpha=\frac{\sqrt{2}}{2}$. Hence we should pick $B_1=L(p)^{\frac{\sqrt{2}}{2}+o(1)}$ and thereby obtain $\frac{B_1}{\probi(B_1)}=L(p)^{\sqrt{2}+o(1)}$. We have given a rough review of the conjecture running time of ECM (conjecture 2.10 \cite{lenstra1987})
+\begin{con}
+Let $n$ be a positive integer not divisible by $2$ and $3$. Let $M(n)$ denote an upper bound for the time, measured in bit opreations, that is needed to perform a single addition (EC addition of points) and let $p$ be the smallest prime dividing $p$. Then the complexity of ECM algorithm \ref{alg:basicECM} is
+\[
+	O\left(e^{\sqrt{(2+o(1))\ln p\ln\ln p}}M(n)\right)
+\]
+\end{con}
+\begin{rem}\label{rem:theory}
+By the former considerations, we need $O\left(e^{\sqrt{\frac{1}{2}\ln p\ln\ln p}}\right)$ curves and use $O\left(e^{\sqrt{2\ln p\ln\ln p}}\right)$ elliptic curve additions.
+\end{rem}
+Note that the running time depends on the least prime dividing $n$. Other known factoring algorithms such as (general)NFS and QS both have running times that depends solely on $n$; $L_n[1/3,(63/9)^{1/3}]$ and $L_n[1/2,1]$ respectively. Theoretically this must give an upper hand to ECM when factoring numbers which have some small prime factors.
+
+One problem with ECM is that a priori we have no idea what $p$ is and it is therefore hard to pick the optimal bound this is also why we must leave $B_1$ as a configurable bound in the algorithm. 
+\section{2. Stage} 
+\label{sec:2StageECM}
+One way to really optimize the change of finding a factor using ECM is to implement a second step called the 2. stage. To see the logic in this we start by assuming $p$ is the least divisor in $n$ and the curve order $\vert E_{W,[a]_p,[b]_p}(\F_p)\vert=\vert E\vert$ turn out not to be $B_1$-power smooth. Then we expect the algorithm to fail. But what if $\vert E\vert$ is $(B_1,B_2)$-smooth for some reasonable (here reasonable should be thought of as that the positive difference $B_2-B_1$ should not be too large) $B_2$? This means that we can write $\vert E\vert = q\prod_{\text{some}\,p_i^{a_i}\leq B_1}p_i^{a_i}$ for some prime $q$ with $B_1<q\leq B_2$ and $q\neq p_i$ for all $i$. The extra prime $q$ is the reason that $k$ did not become a multiple of the curve order $\vert E\vert$. 
+
+Because ECM failed we are in the possession of a point $Q$ satisfying $Q=\left[ \prod_{p_i^{a_i}\leq B_1}p_i^{a_i}\right] P$ where $P$ is the initial point in ECM. Let $\{q_0,q_1,\ldots, q_s\}$ be the primes from $B_1$ to $B_2$ and define $\Delta_i=q_{i+1}-q_i$ for $i=0,1\ldots,s-1$. Then the 2. stage idea in ECM is to check the points
+\begin{align}
+[q_0]Q,\quad [q_0+\Delta_0]Q,\quad [q_0+\Delta_0+\Delta_1]Q,\quad \ldots,\quad \left[q_0+\Delta_0+\Delta_1+\cdots +\Delta_{s-1}\right]Q
+\end{align}
+Note that since $q$ from before is a prime between $B_1$ and $B_2$ we will actually catch it here; say $q=q_i$ then $[q_i]Q=[q_0+\Delta_0+\cdots+\Delta_{i-1}]Q$. 
+
+The crucial observation to make is that we use almost no work per prime. Say we want to calculate 
+\[
+[q_0+\Delta_0+\Delta_1+\cdots+\Delta_i]Q=[q_0+\Delta_0+\cdots +\Delta_{i-1}]Q+[\Delta_i]Q.
+\]
+Beforehand we have computed $[q_0+\Delta_0+\cdots+\Delta_{i-1}]Q$ and saved it an auxiliary register $R$. We then have to calculate $R+[\Delta_i]Q=R+[q_{i+1}-q_i]Q$. Since $q_i$ and $q_{i+1}$ are two consecutive primes, their difference is not that large. 
+
+A more efficient way to do this is to pre compute a table $T$ with $R_1=[2]Q$, $R_2=[2\cdot 2]Q$, $...$, $R_d=[2\cdot d]Q$ where $d$ is the largest integer such that $2d\leq \xi$, where $\xi$ is some limit, see section \ref{sec:implSecondStage}. Say that we again would like to calculate  
+\[
+[q_0+\Delta_0+\Delta_1+\cdots+\Delta_i]Q=[q_0+\Delta_0+\cdots +\Delta_{i-1}]Q+[\Delta_i]Q.
+\]
+Again $R$ contains $[q_0+\Delta_0+\cdots+\Delta_{i-1}]Q$ and we need to compute $R+[\Delta_{i}]Q$. But $\Delta_i=q_{i+1}-q_i$ and since both $q_{i+1}$ and $q_i$ are odd positive integers there difference is even. Hence we may find some $\delta$ such that $\Delta_i=2\cdot\delta$. which imply $[\Delta_i]Q=[2\cdot\delta]Q=R_\delta$ where $R_\delta$ is a precomputed element from our table $T$. This means we only need to compute $R+R_\delta$, only \textit{one} EC-operation. That is, with the precomputed table we need only one EC-operation per prime and since the table can be computed efficiently, this method has a far better performance than the first. One downside is that the method require more memory, but not much. Implementation of the latter version is discussed in section \ref{sec:implSecondStage}.

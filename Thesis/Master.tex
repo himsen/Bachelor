@@ -1,0 +1,58 @@
+\documentclass[a4paper,11pt,twoside]{memoir}
+%\includeonly{Preamble,Cha1EllipticCurves} %,draft if we dont want pictures. 
+% Preamble og styles
+\include{Preamble}
+
+% \Auther{}
+\title{Mathematical aspects of cryptology - elliptic curve factorization using Edwards curves}
+
+ %Dokumentet starter
+\begin{document}
+
+\chapterstyle{burner}
+
+% Forsideindhold starter
+\frontmatter
+
+% Forside
+\begin{titlingpage}
+\include{Frontpage}
+\end{titlingpage}
+
+% Forord
+\include{Introduction}
+
+% Inholdsfortegnelse og figureliste
+\begin{tableofcontents}*
+\end{tableofcontents}
+
+%\begin{listoffigures}*
+%\addcontentsline{toc}{chapter}{Figurer}
+%\end{listoffigures}
+
+% Hovedindhold starter
+\mainmatter
+\pagestyle{ruled}
+\include{Cha1EllipticCurves}
+\include{Cha2BasicECM}
+\include{Cha3EdwardsCurves}
+\include{Cha4ECMUsingEdwardsCurves}
+
+\appendix
+\include{AppA}
+
+\backmatter
+
+\nocite{peters11}
+\nocite{Bernstein_ecmon}
+\nocite{Montgomery:1987}
+\nocite{journals/iacr/BernsteinBL10}
+\nocite{cryptoeprint:2008:013}
+\nocite{Hisil:2008:TEC:1485924.1485951}
+\nocite{cryptoeprint:2008:218}
+\bibliographystyle{plain}
+\bibliography{Master}
+
+\end{document}
+
+

@@ -1,0 +1,46 @@
+\chapter{Introduction}
+
+Reflecting on the quote below by Gauss, consider the ancient problem: ``Given an integer $n$, how do we factor $n$?''. Actually this question is not difficult to answer; use trial division. So let us restate the problem: ``Given an integer $n$, how do we factor $n$ \textbf{fast}?''. Hopefully the reader knows that this turns out to be extremely difficult; the polynomial complexity barrier has not yet been accomplished and who knows, maybe we will never get there?
+
+The interests in factoring integers may seem strange at a first glance. But numerous motivations exists: 
+\begin{itemize}
+\item Security for some cryptographic schemes rest on the hardness of factoring. In this connection it is valuable information to know how big numbers, that human kind together with computers are able to factor.
+\item Factoring are used in several primality proving algorithms, see e.g. \cite{pomeranceEt.al}.
+\item Are there anything more fun than combining the awesome power of a computer with the beauty of mathematics?
+\end{itemize}
+
+This thesis attacks the factorization problem using the well known \textit{elliptic curve method} originally developed by Lenstra in the mid 1980's. Since then, multiple optimizations improving Lenstra's algorithm has been developed; a 2. stage method and use of other elliptic curve models. In 2007 a new model for ECM was proposed by Daniel Bernstein and Tanja Lange building from work of Harold Edwards. It is this thesis goal to study and examine the work by Bernstein and Lange and make an implementation using there ideas.
+
+In chapter 1 basic definitions and a brief reminder of the basic elliptic curve theory is stated. Since this thesis has been written in extension of a course of which curriculum contains some theory of elliptic curves, this is assumed known and as an effect, do not contain proofs. 
+
+Continuing to chapter 2 we analysis the original algorithm by Lenstra including a discussion of the standard continuation of the algorithm.  
+
+Chapter 3 develop and discuss the basic theory of Edwards curves. We present the connection between Edwards curves and  elliptic curves in Weierstrass form, prove important results and analyse the performance of arithmetic on Edwards curves.
+
+The last chapter serves as the documentation for the implementation of the elliptic curve method using Edwards curves, made by the author. It includes a section of experiments showing the performance of the implementation. A great number of further optimizations are also presented and discussed. The source code can be downloaded by visiting \url{http://home.imf.au.dk/himsen/Cryptography.html}.
+
+I would like to take the opportunity to thank my advisor Jørgen Brandt for letting me write this thesis and answering my (frequently occurring) naive questions. Also, thank you Ann-Katrine for correction my many silly gramma mistakes with $\frac{1}{\epsilon}$ precision - indeed ECM is paralyzing. \newline
+\begin{flushright}
+Torben Hansen, 29-08-2012.
+\end{flushright}
+
+\vfill
+\begin{citat}{Carl Friedrich Gauss(1777--1855) %in his famous dissertation \textit{Disquisitiones Arithmeticae.}
+}
+The problem of distinguishing prime numbers from composite numbers 
+and \\of resolving the latter into their prime factors is known to be 
+one of the \\most important and useful in arithmetic.  
+%It has engaged\\ 
+%the industry and wisdom of ancient and modern geometers to such %an\\ 
+%extent that it would be superfluous to discuss the problem at\\ %length...  Further, the dignity of the science itself seems to\\ %require that every possible means be explored for the solution of %a\\ problem so elegant and so celebrated.
+\end{citat}
+%\begin{citat}{Bill Gates (1955--)}
+%  The obvious mathematical breakthrough would be development \\
+% of an easy way to factor large prime numbers.
+%\end{citat}
+%
+%\afterpage{\thispagestyle{empty}}
+%\newpage
+%\begin{center}
+%\textit{This page has intentionally been left blank.} 
+%\end{center}

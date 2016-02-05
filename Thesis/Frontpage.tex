@@ -1,0 +1,53 @@
+%\documentclass[a4paper,11pt,twoside,oneside,final,article]{memoir}
+%\include{Preamble}
+%\begin{document}
+
+  % forside centreret i forhold til papiret ikke i forhold til
+  % marginerne
+  \calccentering{\unitlength}
+  \begin{adjustwidth*}{\unitlength}{-\unitlength}
+    \vspace*{2cm}
+    \centering
+    \scshape
+    
+    {\huge
+    Mathematical aspects of cryptology \\
+    \vspace*{\onelineskip} 
+    % Hvordan fanden gør man det her bare ved at ændre linieafstanden??
+    \Large{\textit{Elliptic curve factorization using Edwards curves}}}
+    
+    \vspace*{6\onelineskip}
+    
+	\includegraphics[width=16cm,height=4cm]{half-race_3}    
+	
+	\vspace*{3\onelineskip}
+    
+    {\large
+    \linespread{1.4}\selectfont
+    Bachelor Thesis in mathematics \\
+    Torben Brandt Hansen, 20091714 \\
+    \today \\
+    Advisor: Jørgen Brandt \\ }
+    \begin{figure}[b]
+		\centering
+		\includegraphics[width=\textwidth]{alt-logo-t-1a171b-en}
+	\end{figure}
+    \strut\vfill
+  \end{adjustwidth*}
+  \newpage
+  \thispagestyle{empty} % intet sidehoved/fod
+  \strut\vfill % smid tekst helt ned i bunden
+  \begin{flushleft} % ingen orddeling
+    Copyright \copyright\ 2012 Torben Brandt Hansen \\
+    \vspace{5mm}
+    Typeset using \LaTeX\ and the memoir document class. Graphics made using Geogebra. \\
+    \vspace{5mm}
+    Bibtex info: \\
+    @Misc\{bachelorThesis:Torben,\\
+    author = \{Torben B. Hansen\},\\
+    title = \{Mathematical Aspects of Cryptology - Elliptic curve factorization using Edwards curves\}, \\
+    year = \{2012\},\\
+    note = \{Program available at \url{http://home.imf.au.dk/himsen/Cryptography.html} \},\\
+    \}
+  \end{flushleft}
+%\end{document}

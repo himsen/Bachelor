@@ -1,0 +1,188 @@
+% standard engelsk opsaetning
+\usepackage[utf8]{inputenc}   % Ê¯Â
+\usepackage[english]{babel}            % engelsk opsÊtning
+\usepackage{memhfixc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} % lidt bedre CM font
+%\usepackage{kpfonts}
+
+% Maple packages
+\usepackage{maple2e}
+\usepackage{mapleenv}
+\usepackage{mapleplots}
+%\usepackage{maplestd2e}
+\usepackage{maplestyle}
+\usepackage{mapletab}
+\usepackage{mapleutil}
+
+% Matematiske symboler og fede tegn i ligninger
+\usepackage{amsmath, amssymb, bm, bbm, dsfont, mathtools, mathdots, mathrsfs}
+
+
+% Andet
+\usepackage{fixltx2e} % retter noget
+%\usepackage{hyperref} % g¯r at alle krydsreferencer, citeringer og indholdsfortegnelser bliver lavet om til interne hyperlinks.
+\usepackage{afterpage}
+
+% Henvisninger
+\usepackage{url}
+\usepackage{natbib} 
+\citestyle{plain} % Plain Style citations
+\makeatletter % Suppress various auxiliary commands in bib-file
+\newcommand\Firstpublished[1]{\expandafter\ignorespaces\@gobble}
+\newcommand\Editedby[1]{\expandafter\ignorespaces\@gobble}
+\newcommand\biband{\expandafter\ignorespaces\@gobble}
+\newcommand\Bookreview{\expandafter\ignorespaces\@gobble}
+\newcommand\Moviereview{\expandafter\ignorespaces\@gobble}
+\makeatother
+
+% Tabeller og s¯jler
+\usepackage{array, booktabs, dcolumn}
+\newcolumntype{d}[1]{D{,}{,}{#1}} % Justering under komma
+
+% Udvidelse til Matric Milj¯
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+% Figurer og farver
+\usepackage{graphicx, caption, subfig, xcolor}
+\captionsetup{font=small,labelfont=bf}
+
+% Saetninger
+\usepackage{amsthm}
+%\usepackage[standard,amsmath,amsthm]{ntheorem}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem*{thm*}{Theorem} % uden nummer
+\newtheorem{fthm}{Main Theorem}[section]
+\newtheorem*{fthm*}{Main Theorem} % uden nummer
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem*{lem*}{Lemma}
+\newtheorem{pre}[thm]{Proposition}
+\newtheorem*{pre*}{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem*{cor*}{Corollary}
+\newtheorem{con}[thm]{Conjecture}
+
+% Definitioner
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem*{defn*}{Definition}
+
+% Bemaerkninger og deslige
+\theoremstyle{remark}
+\newtheorem{ex}[thm]{Example}
+\newtheorem*{ex*}{Example}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem*{rem*}{Remark}
+
+% Pagestyle simpel dokument
+\makepagestyle{mysimplestyle} %Min pagestyle med sidetal
+\copypagestyle{mysimplestyle}{empty}
+\makeoddhead{mysimplestyle}{Kenneth Rasmussen}{\quad}{\today}
+\makeheadrule{mysimplestyle}{\textwidth}{\normalrulethickness}
+\makeoddfoot{mysimplestyle}{}{\thepage\ af \thelastpage}{} %KrÊver to oversÊttelser
+%\pagestyle{mysimplestyle} % Aktiver Simple pagestyle
+
+% Pagestyle st¯rre opgave
+\makeevenfoot{companion}{}{\thepage}{}
+\makeoddfoot{companion}{}{\thepage}{}
+\makeevenfoot{ruled}{}{\thepage}{}
+\makeoddfoot{ruled}{}{\thepage}{}
+\makeevenfoot{plain}{}{\thepage}{}
+\makeoddfoot{plain}{}{\thepage}{}
+\pagestyle{ruled}
+
+% lidt marginer
+\setlrmarginsandblock{3cm}{*}{1}
+\setulmarginsandblock{3cm}{*}{1}
+\setheadfoot{2cm}{\footskip}          % mere h¯jde til header
+\checkandfixthelayout[nearest]
+\renewcommand{\baselinestretch}{1.3}
+
+% Nummering-/inholdsfortegnelsesdybde
+\setsecnumdepth{subsection}
+\settocdepth{subsection}
+
+% Punktopstilling
+\usepackage{enumerate}
+
+% Til specielle matricer
+\usepackage{blkarray, gauss}
+
+%\R for reelle tal og \C for komplekse og \N og de normale
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\K}{\mathbb{K}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\D}{\mathbb D}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\infi}{\mathcal{O}} %point at infinity
+
+% Kommandoer specielt til p-adiske tal
+\newcommand{\p}[1]{\left\lvert #1 \right\rvert _p} % p-adisk absolut vÊrdi
+\newcommand{\pp}[1]{\left\lVert #1 \right\rVert _p} % p-adisk absolut vÊrdi 2 streger
+
+% Kommandoer
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert} % absolut vÊrdi
+\newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}} %partielle differentialer
+\DeclareMathOperator*{\maks}{maks} 
+\newcommand{\aut}{\mathrm{Aut}}
+
+% Ekstra kommandoer Mads
+\newcommand{\iprod}[2]{\langle #1 , #2\rangle}
+\newcommand{\spor}[1]{\textrm{tr}( #1 )}
+\newcommand{\dnorm}[1]{\Vert #1 \Vert}
+\newcommand{\enorm}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\sset}[1]{\lbrace #1 \rbrace}
+\newcommand{\Sset}[1]{\left\{ #1 \right\}}
+\newcommand{\msum}{\sum_{\alpha \in \mathbb N_0^n}} 
+
+\theoremstyle{plain}
+\newtheorem{lemma}[thm]{Lemma}
+
+\theoremstyle{remark}
+\newtheorem*{bemrk}{Remark}
+
+\usepackage[draft,english]{fixme} %in text: \fxnote{..}
+\fxsetup{layout=footnote,marginclue}
+
+\makeatletter
+\makechapterstyle{burner}{%
+  \renewcommand{\chapnamefont}{\normalfont\LARGE\scshape}
+  \renewcommand{\printchaptername}{\raggedleft\chapnamefont \@chapapp}
+  \renewcommand{\chapnumfont}{\normalfont\Huge}
+  \setlength{\chapindent}{\marginparsep}
+  \addtolength{\chapindent}{\marginparwidth}
+  \addtolength{\chapindent}{-2cm}
+  \renewcommand{\printchaptertitle}[1]{%
+    \begin{adjustwidth}{}{}%-\chapindent}
+      \raggedleft \chaptitlefont ##1\par\nobreak
+    \end{adjustwidth}}
+}
+\makeatother
+
+% Citater
+\newsavebox{\citeret}
+\newenvironment{citat}[1]{%
+  \sbox{\citeret}{--- \textsf{#1}}%
+  \begin{flushright}\itshape}%
+  {\par \usebox{\citeret}\end{flushright}}
+
+%Functions
+\newcommand{\Char}{\text{char}}
+\newcommand{\probi}{\text{prob}}
+
+%Algorithms
+\usepackage[section]{algorithm}
+\usepackage{algorithmic}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
